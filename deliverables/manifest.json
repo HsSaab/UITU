@@ -1,5 +1,5 @@
 {
-  "created_at": "2026-10-22T19:52:16.070534+00:00",
+  "created_at": "2026-10-22T20:09:39.958640+00:00",
   "report_pages": {
     "4": 12,
     "5": 18,
@@ -13,7 +13,7 @@
   "idef0_diagrams": 12,
   "files": {
     ".gitignore": "bef260fe2d9260f042680d4e8c32ae78405a806e0f96deaa8b5820408bc572c2",
-    "README.md": "b511484949ff5f547eac8e218e6c2f2965301755935b50f3a1e722a097d690e3",
+    "README.md": "dab1ebe3aa2a38c4b99016f1a8cf621e9dc0e8b63b81672a442a8f33bde9ece3",
     "app/bootstrap.php": "6b6e885ec9c1f505697f67866b3c913724e612923b3bb6a2b11f397093c96528",
     "app/create-user.php": "0da5fd6f479afb669c613816f2730bfe76453232cd59d5c83f64e484dbe37128",
     "app/domain.php": "ae9f5388471257f51dcf66d61555dbc31d16947dac21f7926fbfc880fce90efc",
@@ -56,6 +56,21 @@
     "diagrams/png/vps_A3.png": "dfe966fd6c41b84fadd3e83d0e102a4b5ce4138cc9d03bd2b97af9bc120a6fd4",
     "diagrams/png/vps_A4.png": "c0515a9f1b963f34d67d34382df8b4b6c5bf4aeeced5390ccfcab562bcb653d3",
     "diagrams/png/vps_Aminus0.png": "a090389ac4f426dc3fb09e107c9e95f8685976aa74abc1238aedddb5bcf7a62a",
+    "diagrams/ramus/README.md": "95a1692d73af27addab4c8a3b4cdd1861b8297fd424bba004291ae939bbb2c79",
+    "diagrams/ramus/previews/monitoring_A0.png": "2792793a96e1d2c564af5f3e9d785d44b4c33f01473f4f67a9e1d6ee8c2c94cb",
+    "diagrams/ramus/previews/monitoring_A1.png": "e833a65cae5f9ab737b59def0fa5ef5c1826dd440089ff18147200007c07c9a0",
+    "diagrams/ramus/previews/monitoring_A2.png": "543d038c0e4767c78cfc8bd8549389cb912ac835015a3aef63cbea220086040e",
+    "diagrams/ramus/previews/monitoring_A3.png": "fa09408bc38ab4a464e09034429fb9bc51cb8439015d7ccab4c2b57c1690012e",
+    "diagrams/ramus/previews/monitoring_A4.png": "3e2d79537c0636399328d374e8643155c5d21ccab37a66ca9b6dbfa3d6597b3c",
+    "diagrams/ramus/previews/monitoring_Aminus0.png": "1ede5ea7e8d3104ed6f704eea8cc4de2f7bb4b5bc228e9c5f419851d37c37bec",
+    "diagrams/ramus/previews/vps_A0.png": "e8a4a1c8fec691b00b48dfb214f646efafc1ae8905b3a6c78b69d9177f7b878d",
+    "diagrams/ramus/previews/vps_A1.png": "075dd4767afade7f943c7be3840ed801c8bb9509db6cd1fc827b090d68c9b8de",
+    "diagrams/ramus/previews/vps_A2.png": "33e4ed983b2d8a86323e79e2b1f8017253b7f02a47b358bdda2c4f0ff0588ef4",
+    "diagrams/ramus/previews/vps_A3.png": "3e07de864883733588437db89290901d4da64c34213fc16c90072b412e65fa80",
+    "diagrams/ramus/previews/vps_A4.png": "a76d3b165a943e99173e72354412e962b881570c32374e77598cb1d7a01698d2",
+    "diagrams/ramus/previews/vps_Aminus0.png": "96f3ff5467a3b87780e82ad21588489013af83885eaee3930d92994545ccfcb1",
+    "diagrams/ramus/УИТУ5_Аренда_ВМ_ТехноСервис.rsf": "f857117d8ffd7699cdbc2a88eaf35c7888044e4625914055059b0b910826d482",
+    "diagrams/ramus/УИТУ5_Мониторинг_ТехноСервис.rsf": "5ae60a245a2d0048cca2c69995af50a56437dcadec1711b57a53b41d57a850ac",
     "diagrams/vps_A0.drawio": "f74b712e4d6969c8ffdbf6e687acc94b40db3adc54e3eb7694c84b8f42076350",
     "diagrams/vps_A0.svg": "00387a6d405b5e95aacf637cb7b39793581ff26d49d1fdebad07b98b45428cc1",
     "diagrams/vps_A1.drawio": "455b55e429f801216dba9c5d791b83320734af4d8887d010caea3a6b47d318fa",
@@ -86,6 +101,7 @@
     "evidence/browser-results.json": "3523bdc0a1df79c37208b44c973746fc7d07b8de0b940f907022db6db8125f96",
     "evidence/document-validation.json": "f97452fa72c3ebf2ecc28a05f486aba678921cb43932d496c0d8dfe2929fac83",
     "evidence/environment-validation.json": "3ccb76739af02ffe3b1e50528ae5a096ff22af3f53d585c62a2a46ea9afd82e8",
+    "evidence/ramus-validation.json": "8dd45d18a5f874cc610447db1654115cf52476031c00ce8efa1653f6590b0873",
     "evidence/render-results.json": "4b0ba8a75d236f74fdaf12ced001fcf713a93b9fa560bd8fc3f4cfe1cecc9f31",
     "evidence/report-images/01_login.png": "d223a443ed2a843e5fc82c8c3de63dc9301e521f89709277cf9e647a17158e2b",
     "evidence/report-images/02_registration.png": "e12f4d0b1af26d9d6924379263d14c9fe9c8417c6b8fd4862a6b8fc2406d759f",
@@ -127,13 +143,16 @@
     "tests/verify.py": "bdacbf2450c1f1cac1230cdea5a6a6fb1790f8eb266967f5413ec8495935b9ab",
     "tools/diagrams.py": "3c0c44217ec2ca4ca65ffb20a87a5d00a57b6b9a823dafbcb6889f0e19037644",
     "tools/finalize_reports.py": "6e08ee55c2214ebe7d4bec0584699d56c7d23f9b85a837f6e78f587d36518800",
-    "tools/package_deliverables.py": "26600dcd32cdc2cbb207131c01e9e5367b997837675187a99d5e3ba942824546",
+    "tools/package_deliverables.py": "eb6fdf0afaa1c43962f753302a34bc1774ca06fc6e01ce39287ad30c53c53f01",
+    "tools/ramus_files.py": "967f0b72649e8ac049e43695030dc80e1e759d48300a83490f4a2350617b4dd1",
     "tools/render_diagrams.py": "487d3dfddc43b6eff3d3040649d489077329640765cce3d51a05cc5725d8dc13",
     "tools/report4.py": "ef27f90ef8a2f06ed34adc7a09bd32ef6b0ac349bdbb1915adc7a1cedae86375",
     "tools/report5.py": "24ace37e5efb14119c0d8be15a96cd3c887ec9729f2df81b3e8187684f6b3c9a",
     "tools/report6.py": "59961ebae1cb1860d84832922dc99fa0f811cdb14c57996bb1ab828afbc1c20e",
     "tools/report_base.py": "a2d0bd5d5adf9f3f205e0dc121bf85751d34ef378b88ecd19c9ceff94e44bcac",
     "tools/text_cleanup.py": "318c5c99722a498ed6629a84219f4021d11c6bc21f5463d47fdd708a38c7ed9c",
-    "tools/validate_deliverables.py": "44811ff69e822c5f359d9be05b7710c2bae834bb84c8739c265706f1299f7ab7"
-  }
+    "tools/validate_deliverables.py": "44811ff69e822c5f359d9be05b7710c2bae834bb84c8739c265706f1299f7ab7",
+    "tools/validate_ramus_engine.py": "8933e04a580b4ba6ad7cbb0237597eb4cb04c68808cdd952356bfc418ad63c1f"
+  },
+  "ramus_projects": 2
 }
