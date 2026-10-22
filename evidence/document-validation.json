@@ -1,0 +1,45 @@
+{
+  "reports": [
+    {
+      "report": 4,
+      "pages": 17,
+      "figures": 0,
+      "tables": 9,
+      "sources": 5,
+      "toc": "verified against PDF",
+      "sha256": {
+        ".docx": "61471eb864d71d0e9afd9ddbd6fad9951686ac18769aa1be5d3562291bad293a",
+        ".pdf": "496ad1584fe05afd4c968193c9b7188bb9ffc54e4526a2d5ba191eaa5e6b00a3"
+      }
+    },
+    {
+      "report": 5,
+      "pages": 18,
+      "figures": 10,
+      "tables": 2,
+      "sources": 7,
+      "toc": "verified against PDF",
+      "sha256": {
+        ".docx": "a03205adc33514eecb9e4aa388ad6db491895afefa500249d10e494b58582286",
+        ".pdf": "c268b4df061ec991633d45194f1fe9c9533dbdcab5f03b33f73c1a332176b9a7"
+      }
+    },
+    {
+      "report": 6,
+      "pages": 26,
+      "figures": 11,
+      "tables": 8,
+      "sources": 9,
+      "toc": "verified against PDF",
+      "sha256": {
+        ".docx": "0a420f03a252245badca658d2579e1323a118cdf5ca71df5fcb524f5602fb2b0",
+        ".pdf": "2b782184e6b20b0d7ac8a894778c0e7e793a44507cd92cf01fff24c18633dc8d"
+      }
+    }
+  ],
+  "idef0_diagrams": 10,
+  "unit_tests": 10,
+  "api_tests": 20,
+  "browser_checks": 13,
+  "status": "passed"
+}

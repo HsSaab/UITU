@@ -1,0 +1,12 @@
+{
+  "stack": {
+    "Apache": "2.4.69",
+    "PHP": "8.4.27",
+    "MariaDB": "11.8.6"
+  },
+  "setup_script": "passed",
+  "repeated_start": "passed",
+  "stop_and_restart": "passed",
+  "catalog_size_after_restart": 6,
+  "workflow": "unit tests, API module checks, Chromium scenarios, DOCX and PDF reports"
+}

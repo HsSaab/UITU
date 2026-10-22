@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" version="24.7.17" type="device">
+  <diagram id="Аренда виртуальных серверов / A1" name="Аренда виртуальных серверов / A1">
+    <mxGraphModel dx="1600" dy="1040" grid="1" gridSize="10" page="1" pageScale="1" pageWidth="1600" pageHeight="1040">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" value="A1 · Аренда виртуальных серверов" style="text;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=35;fontColor=#152e3b;strokeColor=none;fillColor=none;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="20" width="1480" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="3" value="Согласовать заявку и ресурсы" style="text;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=30;fontColor=#152e3b;strokeColor=none;fillColor=none;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="70" y="86" width="1460" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="4" value="Проверить&#10;параметры&#10;заявки&#10;A11" style="rounded=0;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=32;fontFamily=Arial;strokeWidth=2;fillColor=white;" vertex="1" parent="1">
+          <mxGeometry x="230" y="340" width="300" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="5" value="Рассчитать&#10;ёмкость&#10;и тариф&#10;A12" style="rounded=0;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=32;fontFamily=Arial;strokeWidth=2;fillColor=white;" vertex="1" parent="1">
+          <mxGeometry x="650" y="490" width="300" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="6" value="Подтвердить&#10;спецификацию&#10;A13" style="rounded=0;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=32;fontFamily=Arial;strokeWidth=2;fillColor=white;" vertex="1" parent="1">
+          <mxGeometry x="1070" y="640" width="300" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="7" value="C1 · SLA; каталог; политика ИБ" style="text;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=29;fontColor=#152e3b;strokeColor=none;fillColor=none;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="200" y="185" width="1200" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="8" parent="1" edge="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=none;endFill=1;strokeWidth=2;fontFamily=Arial;fontSize=27;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="380" y="280" as="sourcePoint" />
+            <mxPoint x="1220" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9" parent="1" edge="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;strokeWidth=2;fontFamily=Arial;fontSize=27;" target="4">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="380.0" y="280" as="sourcePoint" />
+            <mxPoint x="380.0" y="340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="10" parent="1" edge="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;strokeWidth=2;fontFamily=Arial;fontSize=27;" target="5">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="800.0" y="280" as="sourcePoint" />
+            <mxPoint x="800.0" y="490" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="11" parent="1" edge="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;strokeWidth=2;fontFamily=Arial;fontSize=27;" target="6">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1220.0" y="280" as="sourcePoint" />
+            <mxPoint x="1220.0" y="640" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="12" value="I1 · Заявка и&#10;параметры ВМ" style="text;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=28;fontColor=#152e3b;strokeColor=none;fillColor=none;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="28" y="220" width="300" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="13" parent="1" edge="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;strokeWidth=2;fontFamily=Arial;fontSize=27;" target="4">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="45" y="420.0" as="sourcePoint" />
+            <mxPoint x="230" y="420.0" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="14" parent="1" edge="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;strokeWidth=2;fontFamily=Arial;fontSize=27;" source="4" target="5">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="530" y="420.0" as="sourcePoint" />
+            <mxPoint x="650" y="570.0" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="585" y="420.0" />
+              <mxPoint x="585" y="570.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="15" value="Полная заявка" style="text;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=27;fontColor=#152e3b;strokeColor=none;fillColor=none;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="558" y="332.0" width="245" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="16" parent="1" edge="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;strokeWidth=2;fontFamily=Arial;fontSize=27;" source="5" target="6">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="950" y="570.0" as="sourcePoint" />
+            <mxPoint x="1070" y="720.0" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1005" y="570.0" />
+              <mxPoint x="1005" y="720.0" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="17" value="Расчёт ресурсов" style="text;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=27;fontColor=#152e3b;strokeColor=none;fillColor=none;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="978" y="482.0" width="245" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="18" parent="1" edge="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;strokeWidth=2;fontFamily=Arial;fontSize=27;" source="6">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1370" y="720" as="sourcePoint" />
+            <mxPoint x="1545" y="720" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="19" value="O1 · Согласованная&#10;спецификация" style="text;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=28;fontColor=#152e3b;strokeColor=none;fillColor=none;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="1250" y="810" width="315" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="20" parent="1" edge="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=none;endFill=1;strokeWidth=2;fontFamily=Arial;fontSize=27;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="380" y="900" as="sourcePoint" />
+            <mxPoint x="1220" y="900" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="21" parent="1" edge="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;strokeWidth=2;fontFamily=Arial;fontSize=27;" target="4">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="380.0" y="900" as="sourcePoint" />
+            <mxPoint x="380.0" y="500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="22" parent="1" edge="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;strokeWidth=2;fontFamily=Arial;fontSize=27;" target="5">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="800.0" y="900" as="sourcePoint" />
+            <mxPoint x="800.0" y="650" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="23" parent="1" edge="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;strokeWidth=2;fontFamily=Arial;fontSize=27;" target="6">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1220.0" y="900" as="sourcePoint" />
+            <mxPoint x="1220.0" y="800" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="24" value="M1 · Инженер аренды; vSphere; БД; гипервизор" style="text;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=28;fontColor=#152e3b;strokeColor=none;fillColor=none;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="80" y="967" width="1440" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="25" value="ООО «ТехноСервис» · IDEF0 · I — вход; C — управление; O — выход; M — механизм" style="text;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=16;fontColor=#152e3b;strokeColor=none;fillColor=none;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="30" y="1012" width="1540" height="24" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

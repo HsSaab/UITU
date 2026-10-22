@@ -1,0 +1,42 @@
+[
+    {
+        "name": "U01 Приоритет P1",
+        "status": "passed"
+    },
+    {
+        "name": "U02 Неизвестный приоритет",
+        "status": "passed"
+    },
+    {
+        "name": "U03 Новая → В работе",
+        "status": "passed"
+    },
+    {
+        "name": "U04 Запрет закрытия новой",
+        "status": "passed"
+    },
+    {
+        "name": "U05 Закрытая неизменяема",
+        "status": "passed"
+    },
+    {
+        "name": "U06 SLA P1 4 часа",
+        "status": "passed"
+    },
+    {
+        "name": "U07 SLA P2 реакция 30 минут",
+        "status": "passed"
+    },
+    {
+        "name": "U08 SLA P4 72 часа",
+        "status": "passed"
+    },
+    {
+        "name": "U09 Фиксация длительности",
+        "status": "passed"
+    },
+    {
+        "name": "U10 Открытая длительность",
+        "status": "passed"
+    }
+]

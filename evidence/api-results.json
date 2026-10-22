@@ -1,0 +1,88 @@
+{
+  "timestamp": "2026-10-22T18:56:54.422644+00:00",
+  "executed": 20,
+  "failed": 0,
+  "errors": 0,
+  "results": [
+    {
+      "name": "test_01_catalog_seed",
+      "status": "passed"
+    },
+    {
+      "name": "test_02_catalog_crud",
+      "status": "passed"
+    },
+    {
+      "name": "test_03_catalog_acl",
+      "status": "passed"
+    },
+    {
+      "name": "test_04_catalog_validation",
+      "status": "passed"
+    },
+    {
+      "name": "test_05_incident_registration",
+      "status": "passed"
+    },
+    {
+      "name": "test_06_incident_isolation",
+      "status": "passed"
+    },
+    {
+      "name": "test_07_incident_lifecycle",
+      "status": "passed"
+    },
+    {
+      "name": "test_08_incident_invalid_transition",
+      "status": "passed"
+    },
+    {
+      "name": "test_09_incident_priority_audit",
+      "status": "passed"
+    },
+    {
+      "name": "test_10_incident_permissions",
+      "status": "passed"
+    },
+    {
+      "name": "test_11_incident_invalid_ci",
+      "status": "passed"
+    },
+    {
+      "name": "test_12_messages_exchange",
+      "status": "passed"
+    },
+    {
+      "name": "test_13_messages_isolation",
+      "status": "passed"
+    },
+    {
+      "name": "test_14_messages_empty",
+      "status": "passed"
+    },
+    {
+      "name": "test_15_auth_registration",
+      "status": "passed"
+    },
+    {
+      "name": "test_16_auth_wrong_password",
+      "status": "passed"
+    },
+    {
+      "name": "test_17_auth_unauthorized",
+      "status": "passed"
+    },
+    {
+      "name": "test_18_auth_csrf",
+      "status": "passed"
+    },
+    {
+      "name": "test_19_auth_role_protection",
+      "status": "passed"
+    },
+    {
+      "name": "test_20_catalog_referenced_delete",
+      "status": "passed"
+    }
+  ]
+}

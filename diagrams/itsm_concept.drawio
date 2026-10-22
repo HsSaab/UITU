@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" version="24.7.17" type="device">
+  <diagram id="Концептуальная модель ITSM" name="Концептуальная модель ITSM">
+    <mxGraphModel dx="1600" dy="1120" grid="1" gridSize="10" page="1" pageScale="1" pageWidth="1600" pageHeight="1120">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" value="ITSM ООО «ТехноСервис» · концептуальная модель" style="text;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=35;fontColor=#152e3b;strokeColor=none;fillColor=none;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="30" y="18" width="1540" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="3" value="Заказчик / сотрудник&#10;Поддержка · Администратор" style="rounded=0;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=33;fontFamily=Arial;strokeWidth=2;fillColor=white;" vertex="1" parent="1">
+          <mxGeometry x="440" y="115" width="720" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="4" value="Веб-клиент · HTML / CSS / JavaScript&#10;Формы, каталог, очередь, переписка" style="rounded=0;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=32;fontFamily=Arial;strokeWidth=2;fillColor=white;" vertex="1" parent="1">
+          <mxGeometry x="330" y="300" width="940" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="5" value="Apache 2.4 → FastCGI → PHP 8.4&#10;Сессии, роли, проверка данных, API" style="rounded=0;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=32;fontFamily=Arial;strokeWidth=2;fillColor=white;" vertex="1" parent="1">
+          <mxGeometry x="330" y="505" width="940" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="6" value="Модуль&#10;сообщений" style="rounded=0;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=32;fontFamily=Arial;strokeWidth=2;fillColor=white;" vertex="1" parent="1">
+          <mxGeometry x="75" y="725" width="410" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="7" value="Каталог услуг&#10;и связи с КЕ" style="rounded=0;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=32;fontFamily=Arial;strokeWidth=2;fillColor=white;" vertex="1" parent="1">
+          <mxGeometry x="595" y="725" width="410" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="8" value="Service Desk&#10;и расчёт SLA" style="rounded=0;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=32;fontFamily=Arial;strokeWidth=2;fillColor=white;" vertex="1" parent="1">
+          <mxGeometry x="1115" y="725" width="410" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="9" value="MariaDB 11.8 · пользователи, услуги, КЕ, связи,&#10;инциденты, история, сообщения" style="rounded=0;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize=30;fontFamily=Arial;strokeWidth=2;fillColor=#f0f7f7;" vertex="1" parent="1">
+          <mxGeometry x="280" y="940" width="1040" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="10" parent="1" edge="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;strokeWidth=2;fontFamily=Arial;fontSize=27;" source="3" target="4">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="800" y="215" as="sourcePoint" />
+            <mxPoint x="800" y="300" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="11" value="Заявки, сообщения, параметры услуг" style="text;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=27;fontColor=#152e3b;strokeColor=none;fillColor=none;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="850" y="220" width="650" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="12" parent="1" edge="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;strokeWidth=2;fontFamily=Arial;fontSize=27;" source="4" target="5">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="800" y="410" as="sourcePoint" />
+            <mxPoint x="800" y="505" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="13" value="HTTP / JSON; ответы и статусы" style="text;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=27;fontColor=#152e3b;strokeColor=none;fillColor=none;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="850" y="420" width="630" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="14" parent="1" edge="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;strokeWidth=2;fontFamily=Arial;fontSize=27;" source="5" target="6">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="800" y="625" as="sourcePoint" />
+            <mxPoint x="280" y="725" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="800" y="665" />
+              <mxPoint x="280" y="665" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="15" parent="1" edge="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;strokeWidth=2;fontFamily=Arial;fontSize=27;" source="6" target="9">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="280" y="830" as="sourcePoint" />
+            <mxPoint x="800" y="940" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="280" y="880" />
+              <mxPoint x="800" y="880" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="16" parent="1" edge="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;strokeWidth=2;fontFamily=Arial;fontSize=27;" source="5" target="7">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="800" y="625" as="sourcePoint" />
+            <mxPoint x="800" y="725" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="800" y="665" />
+              <mxPoint x="800" y="665" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="17" parent="1" edge="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;strokeWidth=2;fontFamily=Arial;fontSize=27;" source="7" target="9">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="800" y="830" as="sourcePoint" />
+            <mxPoint x="800" y="940" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="800" y="880" />
+              <mxPoint x="800" y="880" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="18" parent="1" edge="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;strokeWidth=2;fontFamily=Arial;fontSize=27;" source="5" target="8">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="800" y="625" as="sourcePoint" />
+            <mxPoint x="1320" y="725" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="800" y="665" />
+              <mxPoint x="1320" y="665" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="19" parent="1" edge="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;strokeWidth=2;fontFamily=Arial;fontSize=27;" source="8" target="9">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1320" y="830" as="sourcePoint" />
+            <mxPoint x="800" y="940" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1320" y="880" />
+              <mxPoint x="800" y="880" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="20" value="Вход: обращения, метрики, сведения об услугах · Выход: решения, каталог, история, показатели" style="text;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=24;fontColor=#152e3b;strokeColor=none;fillColor=none;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="30" y="1065" width="1540" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="21" value="Ресурсы: Linux, CPU / RAM / диск · Документы: SLA №4, модели IDEF0 №5, регламент и тесты" style="text;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=16;fontColor=#152e3b;strokeColor=none;fillColor=none;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="30" y="1100" width="1540" height="25" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
