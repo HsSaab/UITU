@@ -5,6 +5,7 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH,WD_BREAK,WD_LINE_SPACING
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.enum.table import WD_TABLE_ALIGNMENT,WD_CELL_VERTICAL_ALIGNMENT
+from text_cleanup import clean_text
 
 ROOT=Path(__file__).resolve().parents[1]
 NAMES=['Тарасов Арсений Максимович','Дементиевский Дмитрий Максимович','Тыцкий Богдан Максимович']
@@ -58,7 +59,7 @@ class Report:
         p.paragraph_format.page_break_before=False
         # The TOC heading is a standalone structural heading, outside the TOC itself.
         p0=p._p.getprevious();p0.get_or_add_pPr().append(self._bool('pageBreakBefore'))
-        self.d.core_properties.author='; '.join(NAMES);self.d.core_properties.title=f'Практическая работа №{num}. {title}'
+        self.d.core_properties.author='; '.join(NAMES);self.d.core_properties.title=clean_text(f'Практическая работа №{num}. {title}')
         self.d.core_properties.subject='Управление информационно-технологическими услугами. ООО «ТехноСервис»'
     def _bool(self,name):return OxmlElement('w:'+name)
     def titlepage(self):
@@ -77,12 +78,12 @@ class Report:
         self.p('Проверил: ассистент Демидов Н.А.',align='right')
         self.p('');self.p('Москва, 2026',align='center')
     def p(self,text='',align=None,bold=False,size=14,keep=False):
-        p=self.d.add_paragraph();r=p.add_run(text);r.bold=bold;r.font.size=Pt(size)
+        p=self.d.add_paragraph();r=p.add_run(clean_text(text));r.bold=bold;r.font.size=Pt(size)
         if align:p.alignment={'center':WD_ALIGN_PARAGRAPH.CENTER,'left':WD_ALIGN_PARAGRAPH.LEFT,'right':WD_ALIGN_PARAGRAPH.RIGHT}[align];p.paragraph_format.first_line_indent=Cm(0)
         p.paragraph_format.keep_with_next=keep
         return p
     def heading(self,text,center=False,style='Heading 1'):
-        p=self.d.add_paragraph(text,style=style)
+        p=self.d.add_paragraph(clean_text(text),style=style)
         if center:p.alignment=WD_ALIGN_PARAGRAPH.CENTER
         p.paragraph_format.space_after=Pt(14)
         return p
@@ -97,9 +98,9 @@ class Report:
         table=self.d.add_table(rows=1,cols=len(headers));table.style='Table Grid';table.alignment=WD_TABLE_ALIGNMENT.CENTER;table.autofit=False
         if widths is None:widths=[16.5/len(headers)]*len(headers)
         for c,w in zip(table.columns,widths):c.width=Cm(w)
-        for cell,h in zip(table.rows[0].cells,headers):cell.text=h
+        for cell,h in zip(table.rows[0].cells,headers):cell.text=clean_text(h)
         for values in rows:
-            for cell,v in zip(table.add_row().cells,values):cell.text=str(v)
+            for cell,v in zip(table.add_row().cells,values):cell.text=clean_text(v)
         trpr=table.rows[0]._tr.get_or_add_trPr();trpr.append(self._bool('tblHeader'))
         for ri,row in enumerate(table.rows):
             row._tr.get_or_add_trPr().append(self._bool('cantSplit'))
@@ -120,7 +121,7 @@ class Report:
         with Image.open(path) as im:w,h=im.size
         actual=min(width,19*w/h)
         p.add_run().add_picture(str(path),width=Cm(actual))
-        self.d.add_paragraph(f'Рисунок {self.figures} — {caption}',style='Caption')
+        self.d.add_paragraph(clean_text(f'Рисунок {self.figures} — {caption}'),style='Caption')
     def references(self,refs):
         self.sources=refs;self.heading('СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ',center=True)
         for i,s in enumerate(refs,1):self.p(f'{i}. {s}')

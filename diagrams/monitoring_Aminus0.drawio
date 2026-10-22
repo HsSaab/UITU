@@ -50,7 +50,7 @@
         <mxCell id="12" value="M1 · Инженер мониторинга; администратор; Zabbix; БД" style="text;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=30;fontColor=#152e3b;strokeColor=none;fillColor=none;fontStyle=0;" vertex="1" parent="1">
           <mxGeometry x="230" y="855" width="1140" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="13" value="ООО «ТехноСервис» · IDEF0 · I — вход; C — управление; O — выход; M — механизм" style="text;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=16;fontColor=#152e3b;strokeColor=none;fillColor=none;fontStyle=0;" vertex="1" parent="1">
+        <mxCell id="13" value="ООО «ТехноСервис» · IDEF0 · I - вход; C - управление; O - выход; M - механизм" style="text;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=16;fontColor=#152e3b;strokeColor=none;fillColor=none;fontStyle=0;" vertex="1" parent="1">
           <mxGeometry x="30" y="1012" width="1540" height="24" as="geometry" />
         </mxCell>
       </root>

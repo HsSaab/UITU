@@ -2,6 +2,7 @@
 from pathlib import Path
 import json, html, textwrap
 from PIL import ImageFont
+from text_cleanup import clean_text
 from xml.etree import ElementTree as E
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'diagrams';OUT.mkdir(exist_ok=True)
@@ -14,6 +15,7 @@ class Graph:
         m=E.SubElement(d,'mxGraphModel',dx=str(w),dy=str(h),grid='1',gridSize='10',page='1',pageScale='1',pageWidth=str(w),pageHeight=str(h))
         self.r=E.SubElement(m,'root');E.SubElement(self.r,'mxCell',id='0');E.SubElement(self.r,'mxCell',id='1',parent='0')
     def cell(self,value,style,x,y,w,h):
+        value=clean_text(value)
         self.n+=1;id=str(self.n)
         c=E.SubElement(self.r,'mxCell',id=id,value=value,style=style,vertex='1',parent='1');E.SubElement(c,'mxGeometry',x=str(x),y=str(y),width=str(w),height=str(h),**{'as':'geometry'})
         return id
@@ -32,6 +34,7 @@ class Graph:
             if len(lines)*current*1.2<=h-6:return lines,current
         return lines,current
     def text(self,value,x,y,w,h,size=30,bold=False,align='center'):
+        value=clean_text(value)
         lines,size=self.fitted(value,w,h,size,bold);value='\n'.join(lines)
         self.cell(value,f'text;html=0;whiteSpace=wrap;align={align};verticalAlign=middle;fontFamily=Arial;fontSize={size};fontColor=#152e3b;strokeColor=none;fillColor=none;fontStyle={1 if bold else 0};',x,y,w,h)
         lines=value.split('\n');yy=y+h/2-(len(lines)-1)*size*.6
@@ -39,6 +42,7 @@ class Graph:
             xx=x+w/2 if align=='center' else x+6
             self.shapes.append(f'<text x="{xx}" y="{yy}" text-anchor="{"middle" if align=="center" else "start"}" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="{size}" font-weight="{700 if bold else 400}" fill="#152e3b">{html.escape(line)}</text>');yy+=size*1.2
     def box(self,value,x,y,w,h,size=31,shape='rect',fill='white'):
+        value=clean_text(value)
         lines,size=self.fitted(value,w,h,size);value='\n'.join(lines)
         style=f'rounded=0;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontSize={size};fontFamily=Arial;strokeWidth=2;fillColor={fill};'
         if shape=='ellipse':style+='ellipse;'

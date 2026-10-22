@@ -118,7 +118,7 @@
         <mxCell id="24" value="M1 · Инженер аренды; vSphere; БД; гипервизор" style="text;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=28;fontColor=#152e3b;strokeColor=none;fillColor=none;fontStyle=0;" vertex="1" parent="1">
           <mxGeometry x="80" y="967" width="1440" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="25" value="ООО «ТехноСервис» · IDEF0 · I — вход; C — управление; O — выход; M — механизм" style="text;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=16;fontColor=#152e3b;strokeColor=none;fillColor=none;fontStyle=0;" vertex="1" parent="1">
+        <mxCell id="25" value="ООО «ТехноСервис» · IDEF0 · I - вход; C - управление; O - выход; M - механизм" style="text;html=0;whiteSpace=wrap;align=center;verticalAlign=middle;fontFamily=Arial;fontSize=16;fontColor=#152e3b;strokeColor=none;fillColor=none;fontStyle=0;" vertex="1" parent="1">
           <mxGeometry x="30" y="1012" width="1540" height="24" as="geometry" />
         </mxCell>
       </root>

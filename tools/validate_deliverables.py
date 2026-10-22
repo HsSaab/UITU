@@ -14,6 +14,8 @@ for number in [4,5,6]:
  with ZipFile(path) as z:assert z.testzip() is None
  doc=Document(path);pdf=fitz.open(path.with_suffix('.pdf'))
  text='\n'.join(p.text for p in doc.paragraphs)
+ xml_text=''.join(doc._element.xpath('.//w:t/text()'))
+ assert not re.search(r'[\u2013\u2014\[\]]',xml_text),(path.name,'forbidden punctuation in DOCX')
  assert not re.search(r'PAGE_COUNT|FIGURE_COUNT|TABLE_COUNT|SOURCE_COUNT|Содержание обновляется',text)
  assert all(n in text for n in NAMES)
  assert 'ИКБО-74-23' in text and 'Демидов Н.А.' in text
@@ -26,8 +28,8 @@ for number in [4,5,6]:
  normal=doc.styles['Normal'];assert normal.font.name=='Times New Roman' and normal.font.size.pt==14
  assert normal.paragraph_format.line_spacing==1.5
  assert abs(normal.paragraph_format.first_line_indent.cm-1.25)<.01
- figures=[p.text for p in doc.paragraphs if re.match(r'^Рисунок \d+ —',p.text)]
- tables=[p.text for p in doc.paragraphs if re.match(r'^Таблица \d+ —',p.text)]
+ figures=[p.text for p in doc.paragraphs if re.match(r'^Рисунок \d+ -',p.text)]
+ tables=[p.text for p in doc.paragraphs if re.match(r'^Таблица \d+ -',p.text)]
  sources=[p for p in doc.paragraphs if re.match(r'^\d+\. ',p.text)]
  stats=next(p.text for p in doc.paragraphs if p.text.startswith('Объём отчёта:'))
  counts=list(map(int,re.findall(r'\d+',stats)))
@@ -35,7 +37,6 @@ for number in [4,5,6]:
  assert len(figures)==len(doc.inline_shapes)
  for i in range(1,len(figures)+1):assert re.search(r'рисунке '+str(i)+r'\b',text)
  for i in range(1,len(tables)+1):assert re.search(r'таблице '+str(i)+r'\b',text)
- for i in range(1,len(sources)+1):assert re.search(r'\[[^\]]*\b'+str(i)+r'\b[^\]]*\]',text)
  headings=[p for p in doc.paragraphs if p.style.name in ['Heading 1','Heading 2']]
  cached=doc._element.body.xpath('./w:sdt[w:sdtPr/w:tag[@w:val="UITU_TOC"]]/w:sdtContent/w:p')
  assert len(headings)==len(cached)
@@ -47,6 +48,7 @@ for number in [4,5,6]:
   number_text=''.join(entry.xpath('./w:r/w:t/text()'))
   assert title==p.text and int(number_text)==pages[p.text]
  for i,page in enumerate(pdf):
+  assert not re.search(r'[\u2013\u2014\[\]]',page.get_text()),(path.name,i+1,'forbidden punctuation in PDF')
   assert len(page.get_text().strip())>220,(path.name,'unexpected short page',i+1)
   bottom=page.get_text(clip=fitz.Rect(0,780,page.rect.width,page.rect.height)).strip()
   assert bottom==('' if i==0 else str(i+1)),(path.name,i+1,bottom)
