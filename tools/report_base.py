@@ -19,7 +19,7 @@ def font(style,size=14):
 
 class Report:
     def __init__(self,num,title,keywords,abstract):
-        self.num=num;self.title=title;self.d=Document();self.figures=0;self.tables=0;self.sources=[]
+        self.num=num;self.title=title;self.d=Document();self.figures=0;self.tables=0
         sec=self.d.sections[0];sec.page_width=Cm(21);sec.page_height=Cm(29.7)
         sec.left_margin=Cm(3);sec.right_margin=Cm(1.5);sec.top_margin=Cm(2);sec.bottom_margin=Cm(2)
         sec.footer_distance=Cm(1);sec.different_first_page_header_footer=True
@@ -31,7 +31,7 @@ class Report:
         for name in ['Heading 1','Heading 2','Heading 3']:
             s=self.d.styles[name];s.font.bold=True
             s.paragraph_format.keep_with_next=True;s.paragraph_format.line_spacing=1
-        self.d.styles['Heading 1'].paragraph_format.first_line_indent=Cm(0)
+        self.d.styles['Heading 1'].paragraph_format.first_line_indent=Cm(1.25)
         self.d.styles['Heading 1'].paragraph_format.page_break_before=True
         self.d.styles['Caption'].paragraph_format.first_line_indent=Cm(0)
         self.d.styles['Caption'].paragraph_format.line_spacing=1
@@ -42,15 +42,11 @@ class Report:
         # Russian language enables correct hyphenation/spell checking in Word.
         lang=OxmlElement('w:lang');lang.set(qn('w:val'),'ru-RU');normal.element.get_or_add_rPr().append(lang)
         self.titlepage()
-        self.heading('РЕФЕРАТ',center=True)
-        self.stats=self.p('Объём отчёта: PAGE_COUNT с., FIGURE_COUNT рис., TABLE_COUNT табл., SOURCE_COUNT источников.')
-        self.p(keywords.upper())
-        self.p(abstract)
         self.heading('СОДЕРЖАНИЕ',center=True,style='TOC Heading')
         # A genuine Word TOC field, updated by LibreOffice before delivery.
         p=self.d.add_paragraph();p.paragraph_format.first_line_indent=Cm(0)
         begin=OxmlElement('w:fldChar');begin.set(qn('w:fldCharType'),'begin')
-        instr=OxmlElement('w:instrText');instr.set(qn('xml:space'),'preserve');instr.text=' TOC \\o "1-2" \\h \\z \\u '
+        instr=OxmlElement('w:instrText');instr.set(qn('xml:space'),'preserve');instr.text=' TOC \\o "1-3" \\h \\z \\u '
         sep=OxmlElement('w:fldChar');sep.set(qn('w:fldCharType'),'separate')
         end=OxmlElement('w:fldChar');end.set(qn('w:fldCharType'),'end')
         for node in [begin,instr,sep]:p.add_run()._r.append(node)
@@ -63,20 +59,35 @@ class Report:
         self.d.core_properties.subject='Управление информационно-технологическими услугами. ООО «ТехноСервис»'
     def _bool(self,name):return OxmlElement('w:'+name)
     def titlepage(self):
-        for t in ['МИНОБРНАУКИ РОССИИ','Федеральное государственное бюджетное образовательное','учреждение высшего образования','«МИРЭА — Российский технологический университет»','РТУ МИРЭА']:
-            self.p(t,align='center',size=14)
-        self.p('Институт информационных технологий',align='center')
-        self.p('Кафедра корпоративных информационных систем',align='center')
-        self.p('',align='center')
-        self.p(f'ОТЧЁТ ПО ПРАКТИЧЕСКОЙ РАБОТЕ № {self.num}',align='center',bold=True)
-        self.p('по дисциплине',align='center')
-        self.p('«Управление информационно-технологическими услугами»',align='center')
-        self.p('Тема: «'+self.title+'»',align='center')
+        p=self.p('',align='center');p.paragraph_format.line_spacing=1
+        picture=p.add_run().add_picture(str(ROOT/'assets/mirea-emblem.png'),height=Cm(2.4))
+        picture._inline.docPr.set('descr','Эмблема РТУ МИРЭА')
+        self.p('МИНИСТЕРСТВО НАУКИ И ВЫСШЕГО ОБРАЗОВАНИЯ РОССИЙСКОЙ ФЕДЕРАЦИИ',align='center')
+        self.p('Федеральное государственное бюджетное образовательное учреждение высшего образования',align='center')
+        self.p('«МИРЭА - Российский технологический университет»',align='center',bold=True)
+        p=self.p('РТУ МИРЭА',align='center',bold=True)
+        borders=OxmlElement('w:pBdr');bottom=OxmlElement('w:bottom')
+        for key,value in [('val','double'),('sz','6'),('space','8'),('color','000000')]:bottom.set(qn('w:'+key),value)
+        borders.append(bottom);p._p.get_or_add_pPr().append(borders)
         self.p('')
-        self.p('Выполнили: студенты группы ИКБО-74-23',align='right')
-        for n in NAMES:self.p(n,align='right')
-        self.p('Проверил: ассистент Демидов Н.А.',align='right')
-        self.p('');self.p('Москва, 2026',align='center')
+        self.p('Институт информационных технологий (ИТ)',align='center')
+        self.p('Кафедра корпоративных информационных систем (КИС)',align='center')
+        self.p(f'ОТЧЕТ ПО ПРАКТИЧЕСКОЙ РАБОТЕ №{self.num}',align='center',bold=True)
+        self.p('по дисциплине',align='center',bold=True)
+        self.p('«Управление информационно-технологическими услугами»',align='center',bold=True)
+        self.p('')
+        table=self.d.add_table(rows=2,cols=2);table.alignment=WD_TABLE_ALIGNMENT.CENTER;table.autofit=False
+        for col,width in zip(table.columns,[6.3,10.2]):col.width=Cm(width)
+        values=[['Выполнили студенты\nгруппы ИКБО-74-23','\n'.join(NAMES)],['Принял преподаватель','ассистент Демидов Н.А.']]
+        for i,row in enumerate(table.rows):
+            row._tr.get_or_add_trPr().append(self._bool('cantSplit'))
+            for cell,width,value in zip(row.cells,[6.3,10.2],values[i]):
+                cell.width=Cm(width);cell.text=value
+                for p in cell.paragraphs:
+                    p.alignment=WD_ALIGN_PARAGRAPH.CENTER;p.paragraph_format.first_line_indent=Cm(0);p.paragraph_format.line_spacing=1.2
+                    p.paragraph_format.space_before=Pt(15 if i else 0);p.paragraph_format.space_after=Pt(0)
+                    for run in p.runs:run.font.name='Times New Roman';run.font.size=Pt(14)
+        p=self.p('Москва 2026',align='center');p.paragraph_format.space_before=Cm(1.2)
     def p(self,text='',align=None,bold=False,size=14,keep=False):
         p=self.d.add_paragraph();r=p.add_run(clean_text(text));r.bold=bold;r.font.size=Pt(size)
         if align:p.alignment={'center':WD_ALIGN_PARAGRAPH.CENTER,'left':WD_ALIGN_PARAGRAPH.LEFT,'right':WD_ALIGN_PARAGRAPH.RIGHT}[align];p.paragraph_format.first_line_indent=Cm(0)
@@ -84,13 +95,19 @@ class Report:
         return p
     def heading(self,text,center=False,style='Heading 1'):
         p=self.d.add_paragraph(clean_text(text),style=style)
-        if center:p.alignment=WD_ALIGN_PARAGRAPH.CENTER
+        if center:p.alignment=WD_ALIGN_PARAGRAPH.CENTER;p.paragraph_format.first_line_indent=Cm(0)
         p.paragraph_format.space_after=Pt(14)
         return p
     def sub(self,text,newpage=False):
         p=self.heading(text,style='Heading 2')
         if newpage:p.paragraph_format.page_break_before=True
         return p
+    def minor(self,text,newpage=False):
+        p=self.heading(text,style='Heading 3')
+        if newpage:p.paragraph_format.page_break_before=True
+        return p
+    def bullet(self,text):
+        return self.p('- '+text)
     def table(self,caption,headers,rows,widths=None,size=11.5):
         self.tables+=1
         self.p(f'Данные представлены в таблице {self.tables}.',keep=True)
@@ -111,7 +128,6 @@ class Report:
                     p.paragraph_format.keep_with_next=(ri<len(table.rows)-1)
                     p.alignment=WD_ALIGN_PARAGRAPH.LEFT
                     for r in p.runs:r.font.size=Pt(size);r.font.name='Times New Roman';r.bold=(ri==0)
-        self.p('')
         return table
     def figure(self,path,caption,width=16.5):
         from PIL import Image
@@ -122,10 +138,6 @@ class Report:
         actual=min(width,19*w/h)
         p.add_run().add_picture(str(path),width=Cm(actual))
         self.d.add_paragraph(clean_text(f'Рисунок {self.figures} — {caption}'),style='Caption')
-    def references(self,refs):
-        self.sources=refs;self.heading('СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ',center=True)
-        for i,s in enumerate(refs,1):self.p(f'{i}. {s}')
     def save(self):
-        self.stats.text=self.stats.text.replace('FIGURE_COUNT',str(self.figures)).replace('TABLE_COUNT',str(self.tables)).replace('SOURCE_COUNT',str(len(self.sources)))
         path=ROOT/'reports'/f'УИТУ_Практическая_{self.num}_ТехноСервис.docx'
         self.d.save(path);return path

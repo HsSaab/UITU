@@ -2,42 +2,45 @@
   "reports": [
     {
       "report": 4,
-      "pages": 17,
+      "pages": 12,
       "figures": 0,
-      "tables": 9,
-      "sources": 5,
-      "toc": "verified against PDF",
+      "tables": 5,
+      "sources": 0,
+      "toc": "verified against PDF; title, leaders and page number clickable",
+      "toc_links": 15,
       "sha256": {
-        ".docx": "daf6603a2200b2f5c030c81ef9b5c24d2b52a6f9cecc76691542d2cd06e3a337",
-        ".pdf": "d58bd17595da86e4bf84f3ed4d9d424e480b3a1355c718a76bf93ffeaf44e2c5"
+        ".docx": "19bb46be4627795b2796e66081b94efe9e6d098cbe522e76f0e148da78d998b0",
+        ".pdf": "9be5e35658a94a8429a00d46ccd0c6b836079ba6a2884db6cb185cba33ad35c7"
       }
     },
     {
       "report": 5,
       "pages": 18,
-      "figures": 10,
+      "figures": 12,
       "tables": 2,
-      "sources": 7,
-      "toc": "verified against PDF",
+      "sources": 0,
+      "toc": "verified against PDF; title, leaders and page number clickable",
+      "toc_links": 18,
       "sha256": {
-        ".docx": "d52eb6913a0009613e508b48b5681c60204078fe2af62f36ebe6deed8745306b",
-        ".pdf": "ccbe46d5ebe0f8f7806eee143008d2dc7a644dfacefc5d856710490ed9843a85"
+        ".docx": "9facdb4605d3e342e826b7b7c9cdec39f9e087e9ec5f6bbab48ed00459607847",
+        ".pdf": "1c221f9e36968611f4f0f044b038d554c2f8f9b4cb87444372d6a15e3752f35f"
       }
     },
     {
       "report": 6,
-      "pages": 26,
-      "figures": 11,
+      "pages": 19,
+      "figures": 8,
       "tables": 8,
-      "sources": 9,
-      "toc": "verified against PDF",
+      "sources": 0,
+      "toc": "verified against PDF; title, leaders and page number clickable",
+      "toc_links": 17,
       "sha256": {
-        ".docx": "06704bb9cc2794d58e62784ce064b5b40f71a731a7da80af976215c71db7a0e3",
-        ".pdf": "66d2960afd9405566c75f0f8f9d192e4b9c529f92bbbf57f3653e443fed8a490"
+        ".docx": "234fe251715d7de27b4411fc966b395f6d7b427b5cf0a774d02a605c9138d707",
+        ".pdf": "7bb4557b435870b4e16c7425f700606e2da3568e1170b84c1e27ee6020ab65ce"
       }
     }
   ],
-  "idef0_diagrams": 10,
+  "idef0_diagrams": 12,
   "unit_tests": 10,
   "api_tests": 20,
   "browser_checks": 13,

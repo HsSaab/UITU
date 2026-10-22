@@ -24,33 +24,35 @@ def run(parent,text=None,node=None):
   t=element('t');t.text=text;r.append(t)
  if node is not None:r.append(node)
  return r
-def heads(doc):return [(p.text,int(p.style.name[-1])) for p in doc.paragraphs if p.style.name in ['Heading 1','Heading 2']]
+def heads(doc):return [(p.text,int(p.style.name[-1])) for p in doc.paragraphs if p.style.name in ['Heading 1','Heading 2','Heading 3']]
 def cache(doc,entries,pages):
  body=doc._element.body
  existing=body.xpath('./w:sdt[w:sdtPr/w:tag[@w:val="UITU_TOC"]]')
  if existing:old=existing[0]
  else:old=next(p._p for p in doc.paragraphs if any('TOC ' in (x.text or '') for x in p._p.xpath('.//w:instrText')))
  index=body.index(old);body.remove(old)
- for depth in [1,2]:
+ for depth in [1,2,3]:
   name=f'TOC {depth}'
   style=doc.styles[name] if name in doc.styles else doc.styles.add_style(name,WD_STYLE_TYPE.PARAGRAPH)
-  style.font.name='Times New Roman';style.font.size=Pt(14);style.font.color.rgb=RGBColor(0,0,0)
-  f=style.paragraph_format;f.first_line_indent=Cm(0);f.left_indent=Cm(0 if depth==1 else .5);f.line_spacing=1;f.space_before=Pt(0);f.space_after=Pt(0);f.keep_with_next=False
+  style.font.name='Times New Roman';style.font.size=Pt(12);style.font.color.rgb=RGBColor(0,0,0)
+  f=style.paragraph_format;f.first_line_indent=Cm(0);f.left_indent=Cm((depth-1)*.4);f.line_spacing=1;f.space_before=Pt(0);f.space_after=Pt(0);f.keep_with_next=False
   f.tab_stops.add_tab_stop(Cm(16.5),WD_TAB_ALIGNMENT.RIGHT,WD_TAB_LEADER.DOTS)
  bookmarks=[]
- for i,p in enumerate([p for p in doc.paragraphs if p.style.name in ['Heading 1','Heading 2']],1):
+ for i,p in enumerate([p for p in doc.paragraphs if p.style.name in ['Heading 1','Heading 2','Heading 3']],1):
   for b in p._p.xpath('./w:bookmarkStart|./w:bookmarkEnd'):p._p.remove(b)
   p._p.insert(1,element('bookmarkStart',id=100+i,name=f'_TocUITU{i}'));p._p.append(element('bookmarkEnd',id=100+i))
- sdt=element('sdt');pr=element('sdtPr');pr.append(element('tag',val='UITU_TOC'));obj=element('docPartObj');obj.append(element('docPartGallery',val='Table of Contents'));pr.append(obj);sdt.append(pr)
+ sdt=element('sdt');pr=element('sdtPr');pr.append(element('tag',val='UITU_TOC'));obj=element('docPartObj');obj.append(element('docPartGallery',val='Table of Contents'));obj.append(element('docPartUnique'));pr.append(obj);sdt.append(pr)
  content=element('sdtContent');sdt.append(content)
  for i,(title,depth) in enumerate(entries):
   p=element('p');ppr=element('pPr');ppr.append(element('pStyle',val=doc.styles[f'TOC {depth}'].style_id));p.append(ppr)
   if i==0:
    run(p,node=element('fldChar',fldCharType='begin'))
-   ins=element('instrText');ins.set(qn('xml:space'),'preserve');ins.text=' TOC \\o "1-2" \\h \\z \\u '
+   ins=element('instrText');ins.set(qn('xml:space'),'preserve');ins.text=' TOC \\o "1-3" \\h \\z \\u '
    run(p,node=ins);run(p,node=element('fldChar',fldCharType='separate'))
+  # Keep the anchor alone: optional hyperlink attributes suppress internal
+  # links in this LibreOffice DOCX importer during PDF export.
   link=element('hyperlink',anchor=f'_TocUITU{i+1}');p.append(link);run(link,title)
-  run(p,node=element('tab'));run(p,str(pages.get(title,1)))
+  run(link,node=element('tab'));run(link,str(pages.get(title,1)))
   if i==len(entries)-1:run(p,node=element('fldChar',fldCharType='end'))
   content.append(p)
  body.insert(index,sdt)
