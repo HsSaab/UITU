@@ -4,12 +4,60 @@ import re,json,hashlib
 from zipfile import ZipFile
 from docx import Document
 from docx.oxml.ns import qn
+from docx.enum.text import WD_ALIGN_PARAGRAPH
 from lxml import etree
 import fitz
 from PIL import Image
 from finalize_reports import NORM
 ROOT=Path(__file__).resolve().parents[1]
 NAMES=['Тарасов Арсений Максимович','Дементиевский Дмитрий Максимович','Тыцкий Богдан Максимович']
+
+FIGURE_CAPTION=re.compile(r'^Рисунок (\d+)\.(\d+) — \S')
+FORBIDDEN=re.compile(r'[\u2013\u2014\[\]]')
+
+
+def paragraph_value(paragraph, name, default=None):
+ value=getattr(paragraph.paragraph_format,name)
+ if value is not None:return value
+ style=paragraph.style
+ while style is not None:
+  value=getattr(style.paragraph_format,name)
+  if value is not None:return value
+  style=style.base_style
+ return default
+
+
+def centered_without_indent(paragraph, context):
+ assert paragraph_value(paragraph,'alignment')==WD_ALIGN_PARAGRAPH.CENTER,context
+ for name in ['first_line_indent','left_indent','right_indent']:
+  value=paragraph_value(paragraph,name,0)
+  assert abs(value)<10,(context,name,value)
+
+
+def empty_paragraph(paragraph):
+ return not paragraph.text.strip() and not paragraph._p.xpath('.//w:drawing')
+
+
+def has_black_outline(page, rectangle):
+ """Match a thin vector rectangle or the four strokes of its outline."""
+ edges=set()
+ for drawing in page.get_drawings():
+  color=drawing.get('color')
+  if color is None or any(abs(component)>.01 for component in color):continue
+  if not .05<=drawing.get('width',0)<=.5:continue
+  if drawing.get('fill') is not None:continue
+  bounds=fitz.Rect(drawing['rect'])
+  if max(abs(a-b) for a,b in zip(bounds,rectangle))<=1:
+   return True
+  if bounds.height<=1 and bounds.x0<=rectangle.x0+1 and bounds.x1>=rectangle.x1-1:
+   if abs(bounds.y0-rectangle.y0)<=1:edges.add('top')
+   if abs(bounds.y0-rectangle.y1)<=1:edges.add('bottom')
+  if bounds.width<=1 and bounds.y0<=rectangle.y0+1 and bounds.y1>=rectangle.y1-1:
+   if abs(bounds.x0-rectangle.x0)<=1:edges.add('left')
+   if abs(bounds.x0-rectangle.x1)<=1:edges.add('right')
+ return len(edges)==4
+
+
 results=[]
 for number in [4,5,6]:
  path=ROOT/'reports'/f'УИТУ_Практическая_{number}_ТехноСервис.docx'
@@ -17,7 +65,13 @@ for number in [4,5,6]:
  doc=Document(path);pdf=fitz.open(path.with_suffix('.pdf'))
  text='\n'.join(p.text for p in doc.paragraphs)
  xml_text=''.join(doc._element.xpath('.//w:t/text()'))
- assert not re.search(r'[\u2013\u2014\[\]]',xml_text),(path.name,'forbidden punctuation in DOCX')
+ figure_paragraphs=[p for p in doc.paragraphs if p.text.startswith('Рисунок ')]
+ figure_elements={p._p for p in figure_paragraphs}
+ for paragraph in doc._element.xpath('.//w:p'):
+  visible=''.join(paragraph.xpath('.//w:t/text()'))
+  if paragraph in figure_elements and FIGURE_CAPTION.match(visible):
+   visible=visible.replace(' — ',' - ',1)
+  assert not FORBIDDEN.search(visible),(path.name,'forbidden punctuation in DOCX',visible)
  assert not re.search(r'PAGE_COUNT|FIGURE_COUNT|TABLE_COUNT|SOURCE_COUNT|Содержание обновляется',text)
  assert all(n in xml_text for n in NAMES)
  assert 'ИКБО-74-23' in xml_text and 'Демидов Н.А.' in xml_text
@@ -31,15 +85,20 @@ for number in [4,5,6]:
  normal=doc.styles['Normal'];assert normal.font.name=='Times New Roman' and normal.font.size.pt==14
  assert normal.paragraph_format.line_spacing==1.5
  assert abs(normal.paragraph_format.first_line_indent.cm-1.25)<.01
- figure_paragraphs=[p for p in doc.paragraphs if re.match(r'^Рисунок \d+ -',p.text)]
  figures=[p.text for p in figure_paragraphs]
  assert doc.styles['Caption'].font.italic is True
+ assert doc.styles['Caption'].font.name=='Times New Roman'
+ assert doc.styles['Caption'].font.size.pt==14
  for caption in figure_paragraphs:
   assert caption.style.name=='Caption'
+  centered_without_indent(caption,(path.name,'figure caption'))
   assert all(run.italic is not False for run in caption.runs)
+  assert all(run.font.size is None or run.font.size.pt==14 for run in caption.runs)
+  assert all(run.font.name is None or run.font.name=='Times New Roman' for run in caption.runs)
  tables=[p.text for p in doc.paragraphs if p.text.startswith('Таблица ')]
- section=None;section_counts={};table_numbers=[]
- for paragraph in doc.paragraphs:
+ section=None;section_counts={};table_numbers=[];figure_counts={};figure_numbers=[]
+ paragraphs=doc.paragraphs;figure_dimensions={}
+ for index,paragraph in enumerate(paragraphs):
   if paragraph.style.name in ['Heading 1','Heading 2','Heading 3']:
    match=re.match(r'^(\d+)(?:\.|\s)',paragraph.text)
    if match:section=int(match.group(1))
@@ -50,27 +109,72 @@ for number in [4,5,6]:
    section_counts[section]=section_counts.get(section,0)+1
    assert int(match.group(2))==section_counts[section]
    table_numbers.append('.'.join(match.groups()))
+  if paragraph.text.startswith('Рисунок '):
+   match=FIGURE_CAPTION.match(paragraph.text)
+   assert match,(path.name,'figure must use section.figure numbering and em dash',paragraph.text)
+   assert int(match.group(1))==section,(path.name,'wrong figure section',paragraph.text)
+   figure_counts[section]=figure_counts.get(section,0)+1
+   assert int(match.group(2))==figure_counts[section],(path.name,'wrong figure ordinal',paragraph.text)
+   label='.'.join(match.groups());figure_numbers.append(label)
+   assert index>=3 and index+1<len(paragraphs)
+   reference,blank_before,picture=paragraphs[index-3:index]
+   blank_after=paragraphs[index+1]
+   assert re.search(r'на рисунке '+re.escape(label)+r'\.',reference.text),(path.name,'reference must precede figure',label)
+   assert empty_paragraph(blank_before) and blank_before.style.name=='Normal',(path.name,'blank line before figure',label)
+   assert empty_paragraph(blank_after) and blank_after.style.name=='Normal',(path.name,'blank line after caption',label)
+   assert picture.text=='', (path.name,'picture paragraph has text',label)
+   assert len(picture._p.xpath('.//w:drawing'))==1,(path.name,'picture missing',label)
+   centered_without_indent(picture,(path.name,'figure',label))
+   outline=picture._p.xpath('.//pic:spPr/a:ln')
+   assert len(outline)==1 and outline[0].get('w')=='3175',(path.name,'0.25 pt picture outline',label)
+   color=outline[0].find(qn('a:solidFill')+'/'+qn('a:srgbClr'))
+   assert color is not None and color.get('val')=='000000',(path.name,'black picture outline',label)
+   assert outline[0].find(qn('a:noFill')) is None
+   inline=picture._p.xpath('.//wp:inline')
+   assert len(inline)==1
+   assert all(inline[0].get('dist'+side)=='0' for side in ['T','B','L','R']),(path.name,'picture wrap distances must be zero',label)
+   effect=inline[0].xpath('./wp:effectExtent')
+   assert len(effect)==1 and all(effect[0].get(side)=='0' for side in ['l','t','r','b']),(path.name,'picture effect extents must be zero',label)
+   extent=picture._p.xpath('.//wp:inline/wp:extent')
+   assert len(extent)==1
+   figure_dimensions[label]=(int(extent[0].get('cx'))/12700,int(extent[0].get('cy'))/12700)
+   if index+2<len(paragraphs):
+    assert not empty_paragraph(paragraphs[index+2]),(path.name,'more than one blank line after caption',label)
  sources=[p for p in doc.paragraphs if p.style.name=='Bibliography']
  assert not sources
  assert len(figures)+1==len(doc.inline_shapes)
  assert doc.inline_shapes[0]._inline.docPr.get('descr')=='Эмблема РТУ МИРЭА'
- for i in range(1,len(figures)+1):assert re.search(r'рисунке '+str(i)+r'\b',text)
  for label in table_numbers:
   assert f'в таблице {label}.' in text
   assert any(page.search_for('Таблица '+label+' -') for page in pdf),(path.name,label)
- # Confirm italics in the actual exported PDF, including wrapped captions.
- for caption in figures:
+ # Check actual PDF captions and the adjacent raster illustration plus border.
+ center=(sec.page_width.pt+sec.left_margin.pt-sec.right_margin.pt)/2
+ for caption,label in zip(figures,figure_numbers):
   target=NORM(caption);found=False
   for page in pdf:
    lines=[line for block in page.get_text('dict')['blocks'] if block['type']==0 for line in block['lines']]
    for start,line in enumerate(lines):
     first=''.join(span['text'] for span in line['spans'])
-    if not first.startswith('Рисунок '):continue
+    if not first.startswith(f'Рисунок {label} — '):continue
     for count in range(1,5):
      selected=lines[start:start+count]
      spans=[span for item in selected for span in item['spans'] if span['text'].strip()]
      if NORM(''.join(span['text'] for span in spans))==target:
       assert all(span['flags'] & 2 for span in spans),(path.name,'nonitalic PDF caption',caption)
+      assert all(abs(span['size']-14)<.15 for span in spans),(path.name,'PDF caption must be 14 pt',caption)
+      for item in selected:
+       bounds=fitz.Rect(item['bbox'])
+       assert abs((bounds.x0+bounds.x1)/2-center)<3,(path.name,'PDF caption off center',caption)
+      caption_top=min(span['bbox'][1] for span in spans)
+      images=[image for image in page.get_image_info() if image['bbox'][3]<=caption_top+1]
+      assert images,(path.name,'figure and caption split across pages',label)
+      image=max(images,key=lambda image:image['bbox'][3]);bounds=fitz.Rect(image['bbox'])
+      assert abs((bounds.x0+bounds.x1)/2-center)<1,(path.name,'PDF figure off center',label)
+      width,height=figure_dimensions[label]
+      assert abs(bounds.width-width)<.75 and abs(bounds.height-height)<.75,(path.name,'wrong PDF figure dimensions',label)
+      assert has_black_outline(page,bounds),(path.name,'PDF picture outline missing',label)
+      reference=page.search_for(f'на рисунке {label}.')
+      assert reference and any(rect.y1<bounds.y0 for rect in reference),(path.name,'PDF reference not above figure',label)
       found=True;break
    if found:break
   assert found,(path.name,'caption not found in PDF',caption)
@@ -115,7 +219,9 @@ for number in [4,5,6]:
    assert active and all(l['page']==pages[heading.text]-1 for l in active),(path.name,heading.text,'nonclickable or incorrect TOC target',index)
  for i,page in enumerate(pdf):
   assert 'СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ' not in page.get_text()
-  assert not re.search(r'[\u2013\u2014\[\]]',page.get_text()),(path.name,i+1,'forbidden punctuation in PDF')
+  for line in page.get_text().splitlines():
+   allowed=re.sub(r'^(\s*Рисунок \d+\.\d+) — ',r'\1 - ',line)
+   assert not FORBIDDEN.search(allowed),(path.name,i+1,'forbidden punctuation in PDF',line)
   assert len(page.get_text().strip())>220,(path.name,'unexpected short page',i+1)
   bottom=page.get_text(clip=fitz.Rect(0,795,page.rect.width,page.rect.height)).strip()
   assert bottom==('' if i==0 else str(i+1)),(path.name,i+1,bottom)
@@ -123,7 +229,7 @@ for number in [4,5,6]:
    if block['type']==0:
     x0,y0,x1,y1=block['bbox'];assert x0>=25 and x1<=page.rect.width-20 and y0>=20 and y1<=page.rect.height-10
  hashes={suffix:hashlib.sha256(path.with_suffix(suffix).read_bytes()).hexdigest() for suffix in ['.docx','.pdf']}
- results.append({'report':number,'pages':len(pdf),'figures':len(figures),'figure_captions':'italic in DOCX and PDF','tables':len(tables),'table_numbers':table_numbers,'sources':len(sources),'toc':'verified against PDF; title, leaders and page number clickable','toc_links':len(headings),'sha256':hashes})
+ results.append({'report':number,'pages':len(pdf),'figures':len(figures),'figure_captions':'centered, 14 pt italic in DOCX and PDF','figure_numbers':figure_numbers,'figure_layout':'one blank line before illustration and after caption; centered; black 0.25 pt border; prior references verified','tables':len(tables),'table_numbers':table_numbers,'sources':len(sources),'toc':'verified against PDF; title, leaders and page number clickable','toc_links':len(headings),'sha256':hashes})
  pdf.close()
 index=json.loads((ROOT/'diagrams/idef0-index.json').read_text());assert len(index)==12
 for key in ['vps','monitoring']:

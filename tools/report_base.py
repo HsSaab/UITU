@@ -22,6 +22,7 @@ class Report:
     def __init__(self,num,title,keywords,abstract):
         self.num=num;self.title=title;self.d=Document();self.figures=0;self.tables=0
         self.current_section=None;self.section_tables={};self.table_numbers=[]
+        self.section_figures={};self.figure_numbers=[]
         sec=self.d.sections[0];sec.page_width=Cm(21);sec.page_height=Cm(29.7)
         sec.left_margin=Cm(3);sec.right_margin=Cm(1.5);sec.top_margin=Cm(2);sec.bottom_margin=Cm(2)
         sec.footer_distance=Cm(1);sec.different_first_page_header_footer=True
@@ -36,6 +37,8 @@ class Report:
         self.d.styles['Heading 1'].paragraph_format.first_line_indent=Cm(1.25)
         self.d.styles['Heading 1'].paragraph_format.page_break_before=True
         self.d.styles['Caption'].paragraph_format.first_line_indent=Cm(0)
+        self.d.styles['Caption'].paragraph_format.left_indent=Cm(0)
+        self.d.styles['Caption'].paragraph_format.right_indent=Cm(0)
         self.d.styles['Caption'].paragraph_format.line_spacing=1
         self.d.styles['Caption'].paragraph_format.alignment=WD_ALIGN_PARAGRAPH.CENTER
         self.d.styles['Caption'].font.italic=True
@@ -143,13 +146,40 @@ class Report:
         return table
     def figure(self,path,caption,width=16.5):
         from PIL import Image
+        if self.current_section is None:
+            raise ValueError('Иллюстрация должна находиться в нумерованном разделе: '+caption)
         self.figures+=1
-        self.p(f'Результат представлен на рисунке {self.figures}.',keep=True)
-        p=self.d.add_paragraph();p.alignment=WD_ALIGN_PARAGRAPH.CENTER;p.paragraph_format.first_line_indent=Cm(0);p.paragraph_format.keep_with_next=True;p.paragraph_format.line_spacing=1
+        self.section_figures[self.current_section]=self.section_figures.get(self.current_section,0)+1
+        number=f'{self.current_section}.{self.section_figures[self.current_section]}'
+        self.figure_numbers.append(number)
+        self.p(f'Результат представлен на рисунке {number}.',keep=True)
+        self.p('',align='center',keep=True)
+        p=self.d.add_paragraph();p.alignment=WD_ALIGN_PARAGRAPH.CENTER
+        p.paragraph_format.first_line_indent=Cm(0)
+        p.paragraph_format.left_indent=Cm(0);p.paragraph_format.right_indent=Cm(0)
+        p.paragraph_format.keep_with_next=True;p.paragraph_format.keep_together=True
+        p.paragraph_format.line_spacing=1
         with Image.open(path) as im:w,h=im.size
         actual=min(width,19*w/h)
-        p.add_run().add_picture(str(path),width=Cm(actual))
-        self.d.add_paragraph(clean_text(f'Рисунок {self.figures} — {caption}'),style='Caption')
+        picture=p.add_run().add_picture(str(path),width=Cm(actual))
+        # Set every wrap/effect distance explicitly. LibreOffice otherwise adds
+        # default graphic margins that shift a full-width inline picture.
+        for name in ('distT','distB','distL','distR'):picture._inline.set(name,'0')
+        extent=OxmlElement('wp:effectExtent')
+        for name in ('l','t','r','b'):extent.set(name,'0')
+        picture._inline.insert(1,extent)
+        picture._inline.docPr.set('descr',f'Рисунок {number}. '+clean_text(caption))
+        # Native Word picture outline: 0.25 pt is the minimum standard line weight.
+        outline=OxmlElement('a:ln');outline.set('w','3175')
+        fill=OxmlElement('a:solidFill');color=OxmlElement('a:srgbClr')
+        color.set('val','000000');fill.append(color);outline.append(fill)
+        dash=OxmlElement('a:prstDash');dash.set('val','solid');outline.append(dash)
+        picture._inline.xpath('.//pic:spPr')[0].append(outline)
+        # The requested caption separator is an em dash; body text keeps its
+        # earlier punctuation cleanup through clean_text.
+        label=self.d.add_paragraph(f'Рисунок {number} — '+clean_text(caption),style='Caption')
+        label.paragraph_format.keep_with_next=True;label.paragraph_format.keep_together=True
+        self.p('',align='center')
     def save(self):
         path=ROOT/'reports'/f'УИТУ_Практическая_{self.num}_ТехноСервис.docx'
         self.d.save(path);return path

@@ -4,7 +4,9 @@
       "report": 4,
       "pages": 12,
       "figures": 0,
-      "figure_captions": "italic in DOCX and PDF",
+      "figure_captions": "centered, 14 pt italic in DOCX and PDF",
+      "figure_numbers": [],
+      "figure_layout": "one blank line before illustration and after caption; centered; black 0.25 pt border; prior references verified",
       "tables": 5,
       "table_numbers": [
         "2.1",
@@ -17,15 +19,30 @@
       "toc": "verified against PDF; title, leaders and page number clickable",
       "toc_links": 15,
       "sha256": {
-        ".docx": "0bbb7dfea4885b7daf3a407f34595137c951b3d8d2012c6c0eba5c0d2201d82e",
-        ".pdf": "488df6d80219c9a6178a35ff376a42b2fb62645bf67e40120bab032c3cb19e0e"
+        ".docx": "a24ab9088f9b39b6904972cc77e34e0771b6bd99f7c23ef50bdabca80b9a6b2f",
+        ".pdf": "0202972c8f99650351a32a8870e2d37a2aa7398911230ced8cffc0d0efc5e399"
       }
     },
     {
       "report": 5,
       "pages": 18,
       "figures": 12,
-      "figure_captions": "italic in DOCX and PDF",
+      "figure_captions": "centered, 14 pt italic in DOCX and PDF",
+      "figure_numbers": [
+        "2.1",
+        "2.2",
+        "2.3",
+        "2.4",
+        "2.5",
+        "2.6",
+        "3.1",
+        "3.2",
+        "3.3",
+        "3.4",
+        "3.5",
+        "3.6"
+      ],
+      "figure_layout": "one blank line before illustration and after caption; centered; black 0.25 pt border; prior references verified",
       "tables": 2,
       "table_numbers": [
         "1.1",
@@ -35,15 +52,26 @@
       "toc": "verified against PDF; title, leaders and page number clickable",
       "toc_links": 19,
       "sha256": {
-        ".docx": "379d1078e3f7e69afe9895fa2f4fb8416a1bf0185f14363d6c68c4c553c155b6",
-        ".pdf": "cd8071b89ef0db80fad08c5b733453f50ced1b17cf5fe08cd989db8a5fc87944"
+        ".docx": "c9975427cbc38114679a55abfca8cbe4b839e729d652fbafdaca09a324b6ce44",
+        ".pdf": "f7656d3cbe3bed8d74004d9f5f59c0eb0c73ba25733fa6971506ef081173d267"
       }
     },
     {
       "report": 6,
       "pages": 19,
       "figures": 8,
-      "figure_captions": "italic in DOCX and PDF",
+      "figure_captions": "centered, 14 pt italic in DOCX and PDF",
+      "figure_numbers": [
+        "1.1",
+        "2.1",
+        "2.2",
+        "2.3",
+        "2.4",
+        "2.5",
+        "2.6",
+        "3.1"
+      ],
+      "figure_layout": "one blank line before illustration and after caption; centered; black 0.25 pt border; prior references verified",
       "tables": 8,
       "table_numbers": [
         "1.1",
@@ -59,8 +87,8 @@
       "toc": "verified against PDF; title, leaders and page number clickable",
       "toc_links": 17,
       "sha256": {
-        ".docx": "f51b7ab54cd3786b595076ff95f89f053d2dca978756f1987dc85e51ae2ed80e",
-        ".pdf": "90973b4ad8ab543b142d704ca9afc0a13415fd290efa51fee0149e0b83bafe02"
+        ".docx": "eab6752a8e53f83c1f093704e03a73ccce4e4d86f8aca087a700cf9c77d8776a",
+        ".pdf": "26aebbd0d83037bc2f488d7bf9cd664a9d31664760bd5a903dfc6d9d2e68e5fc"
       }
     }
   ],
