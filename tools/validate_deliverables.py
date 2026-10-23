@@ -7,6 +7,7 @@ from docx.oxml.ns import qn
 from lxml import etree
 import fitz
 from PIL import Image
+from finalize_reports import NORM
 ROOT=Path(__file__).resolve().parents[1]
 NAMES=['Тарасов Арсений Максимович','Дементиевский Дмитрий Максимович','Тыцкий Богдан Максимович']
 results=[]
@@ -30,14 +31,49 @@ for number in [4,5,6]:
  normal=doc.styles['Normal'];assert normal.font.name=='Times New Roman' and normal.font.size.pt==14
  assert normal.paragraph_format.line_spacing==1.5
  assert abs(normal.paragraph_format.first_line_indent.cm-1.25)<.01
- figures=[p.text for p in doc.paragraphs if re.match(r'^Рисунок \d+ -',p.text)]
- tables=[p.text for p in doc.paragraphs if re.match(r'^Таблица \d+ -',p.text)]
+ figure_paragraphs=[p for p in doc.paragraphs if re.match(r'^Рисунок \d+ -',p.text)]
+ figures=[p.text for p in figure_paragraphs]
+ assert doc.styles['Caption'].font.italic is True
+ for caption in figure_paragraphs:
+  assert caption.style.name=='Caption'
+  assert all(run.italic is not False for run in caption.runs)
+ tables=[p.text for p in doc.paragraphs if p.text.startswith('Таблица ')]
+ section=None;section_counts={};table_numbers=[]
+ for paragraph in doc.paragraphs:
+  if paragraph.style.name in ['Heading 1','Heading 2','Heading 3']:
+   match=re.match(r'^(\d+)(?:\.|\s)',paragraph.text)
+   if match:section=int(match.group(1))
+  if paragraph.text.startswith('Таблица '):
+   match=re.match(r'^Таблица (\d+)\.(\d+) - ',paragraph.text)
+   assert match,(path.name,'table must use section.table numbering',paragraph.text)
+   assert int(match.group(1))==section,(path.name,'wrong table section',paragraph.text)
+   section_counts[section]=section_counts.get(section,0)+1
+   assert int(match.group(2))==section_counts[section]
+   table_numbers.append('.'.join(match.groups()))
  sources=[p for p in doc.paragraphs if p.style.name=='Bibliography']
  assert not sources
  assert len(figures)+1==len(doc.inline_shapes)
  assert doc.inline_shapes[0]._inline.docPr.get('descr')=='Эмблема РТУ МИРЭА'
  for i in range(1,len(figures)+1):assert re.search(r'рисунке '+str(i)+r'\b',text)
- for i in range(1,len(tables)+1):assert re.search(r'таблице '+str(i)+r'\b',text)
+ for label in table_numbers:
+  assert f'в таблице {label}.' in text
+  assert any(page.search_for('Таблица '+label+' -') for page in pdf),(path.name,label)
+ # Confirm italics in the actual exported PDF, including wrapped captions.
+ for caption in figures:
+  target=NORM(caption);found=False
+  for page in pdf:
+   lines=[line for block in page.get_text('dict')['blocks'] if block['type']==0 for line in block['lines']]
+   for start,line in enumerate(lines):
+    first=''.join(span['text'] for span in line['spans'])
+    if not first.startswith('Рисунок '):continue
+    for count in range(1,5):
+     selected=lines[start:start+count]
+     spans=[span for item in selected for span in item['spans'] if span['text'].strip()]
+     if NORM(''.join(span['text'] for span in spans))==target:
+      assert all(span['flags'] & 2 for span in spans),(path.name,'nonitalic PDF caption',caption)
+      found=True;break
+   if found:break
+  assert found,(path.name,'caption not found in PDF',caption)
  headings=[p for p in doc.paragraphs if p.style.name in ['Heading 1','Heading 2','Heading 3']]
  cached=doc._element.body.xpath('./w:sdt[w:sdtPr/w:tag[@w:val="UITU_TOC"]]/w:sdtContent/w:p')
  assert len(headings)==len(cached)
@@ -87,7 +123,7 @@ for number in [4,5,6]:
    if block['type']==0:
     x0,y0,x1,y1=block['bbox'];assert x0>=25 and x1<=page.rect.width-20 and y0>=20 and y1<=page.rect.height-10
  hashes={suffix:hashlib.sha256(path.with_suffix(suffix).read_bytes()).hexdigest() for suffix in ['.docx','.pdf']}
- results.append({'report':number,'pages':len(pdf),'figures':len(figures),'tables':len(tables),'sources':len(sources),'toc':'verified against PDF; title, leaders and page number clickable','toc_links':len(headings),'sha256':hashes})
+ results.append({'report':number,'pages':len(pdf),'figures':len(figures),'figure_captions':'italic in DOCX and PDF','tables':len(tables),'table_numbers':table_numbers,'sources':len(sources),'toc':'verified against PDF; title, leaders and page number clickable','toc_links':len(headings),'sha256':hashes})
  pdf.close()
 index=json.loads((ROOT/'diagrams/idef0-index.json').read_text());assert len(index)==12
 for key in ['vps','monitoring']:

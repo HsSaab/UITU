@@ -1,4 +1,5 @@
 from pathlib import Path
+import re
 from docx import Document
 from docx.shared import Cm,Pt,RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH,WD_BREAK,WD_LINE_SPACING
@@ -20,6 +21,7 @@ def font(style,size=14):
 class Report:
     def __init__(self,num,title,keywords,abstract):
         self.num=num;self.title=title;self.d=Document();self.figures=0;self.tables=0
+        self.current_section=None;self.section_tables={};self.table_numbers=[]
         sec=self.d.sections[0];sec.page_width=Cm(21);sec.page_height=Cm(29.7)
         sec.left_margin=Cm(3);sec.right_margin=Cm(1.5);sec.top_margin=Cm(2);sec.bottom_margin=Cm(2)
         sec.footer_distance=Cm(1);sec.different_first_page_header_footer=True
@@ -36,6 +38,8 @@ class Report:
         self.d.styles['Caption'].paragraph_format.first_line_indent=Cm(0)
         self.d.styles['Caption'].paragraph_format.line_spacing=1
         self.d.styles['Caption'].paragraph_format.alignment=WD_ALIGN_PARAGRAPH.CENTER
+        self.d.styles['Caption'].font.italic=True
+        self.d.styles['Caption'].font.bold=False
         footer=sec.footer.paragraphs[0];footer.alignment=WD_ALIGN_PARAGRAPH.CENTER;footer.paragraph_format.first_line_indent=Cm(0)
         r=footer.add_run();r.font.name='Times New Roman';r.font.size=Pt(14)
         f=OxmlElement('w:fldSimple');f.set(qn('w:instr'),'PAGE');r._r.addnext(f)
@@ -94,6 +98,9 @@ class Report:
         p.paragraph_format.keep_with_next=keep
         return p
     def heading(self,text,center=False,style='Heading 1'):
+        section=re.match(r'^(\d+)(?:\.|\s)',text)
+        if section and style in ['Heading 1','Heading 2','Heading 3']:
+            self.current_section=int(section.group(1))
         p=self.d.add_paragraph(clean_text(text),style=style)
         if center:p.alignment=WD_ALIGN_PARAGRAPH.CENTER;p.paragraph_format.first_line_indent=Cm(0)
         p.paragraph_format.space_after=Pt(14)
@@ -109,9 +116,14 @@ class Report:
     def bullet(self,text):
         return self.p('- '+text)
     def table(self,caption,headers,rows,widths=None,size=11.5):
+        if self.current_section is None:
+            raise ValueError('Таблица должна находиться в нумерованном разделе: '+caption)
         self.tables+=1
-        self.p(f'Данные представлены в таблице {self.tables}.',keep=True)
-        cap=self.p(f'Таблица {self.tables} — {caption}',align='left',keep=True);cap.paragraph_format.line_spacing=1
+        self.section_tables[self.current_section]=self.section_tables.get(self.current_section,0)+1
+        number=f'{self.current_section}.{self.section_tables[self.current_section]}'
+        self.table_numbers.append(number)
+        self.p(f'Данные представлены в таблице {number}.',keep=True)
+        cap=self.p(f'Таблица {number} - {caption}',align='left',keep=True);cap.paragraph_format.line_spacing=1
         table=self.d.add_table(rows=1,cols=len(headers));table.style='Table Grid';table.alignment=WD_TABLE_ALIGNMENT.CENTER;table.autofit=False
         if widths is None:widths=[16.5/len(headers)]*len(headers)
         for c,w in zip(table.columns,widths):c.width=Cm(w)
